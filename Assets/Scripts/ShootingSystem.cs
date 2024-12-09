@@ -11,6 +11,8 @@ public class ShootingSystem : MonoBehaviour {
     private ObjectPool<Laser> laserPool;
     [SerializeField] private AudioManager audioManager;
     [SerializeField] private AudioClip laserSound;
+    [SerializeField] private Transform[] spawnPositions;
+    private bool tripleShotActive = false;
 
     private void Awake() {
         laserPool = new ObjectPool<Laser>(CreateLaser, GetLaser, ReleaseLaser, DestroyLaser);
@@ -34,14 +36,45 @@ public class ShootingSystem : MonoBehaviour {
     private void DestroyLaser(Laser laser) {
         Destroy(laser.gameObject);
     }
+    public void ReleaseLaserExternally(Laser laser) {
+        if (laser != null && laser.gameObject.activeSelf) {
+            laserPool.Release(laser);
+        }
+        else {
+            Debug.LogWarning("Intentando liberar un láser ya liberado.");
+        }
+    }
+
 
     void Update() {
         timer += Time.deltaTime;
         if (Input.GetKeyDown(KeyCode.Space) && timer >= shootingRatio) {
-            laserPool.Get();
+            if (tripleShotActive) {
+                foreach (Transform spawn in spawnPositions) {
+                    FireLaser(spawn.position);
+                }
+            }
+            else {
+                laserPool.Get();
+            }
             timer = 0f;
-
             AudioManager.Instance.PlaySoundEffect(laserSound);
         }
+    }
+
+    private void FireLaser(Vector3 spawnPosition) {
+        Laser laser = laserPool.Get();
+        laser.transform.position = spawnPosition;
+        laser.gameObject.SetActive(true);
+    }
+
+    public void ActivateTripleShot(float duration) {
+        StartCoroutine(TripleShot(duration));
+    }
+
+    private IEnumerator TripleShot(float duration) {
+        tripleShotActive = true;
+        yield return new WaitForSeconds(duration);
+        tripleShotActive = false;
     }
 }

@@ -19,7 +19,7 @@ public class Laser : MonoBehaviour
     }
 
     void Update() {
-        transform.Translate(-transform.right * velocidad * Time.deltaTime);
+        transform.Translate(Time.deltaTime * velocidad * -transform.right);
         
         timer += Time.deltaTime;
         if (timer >= 4) {

@@ -54,9 +54,16 @@ public class GameManager : MonoBehaviour {
         }
     }
 
-    public void IncrementScore() {
-        ++score;
+    public void IncrementScore(int scoreAddition) {
+        score += scoreAddition;
         scoreText.text = "Score: " + score.ToString();
+    }
+
+    public void IncreaseHealth(int healthAddition) {
+        if (health + healthAddition <= 100) {
+            health += healthAddition;
+            healthBarImage.fillAmount = (float)health / 100f;
+        }
     }
 
     public void DecreaseHealth() {

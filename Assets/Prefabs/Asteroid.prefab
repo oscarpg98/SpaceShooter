@@ -132,6 +132,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   audioManager: {fileID: 0}
   crashSound: {fileID: 8300000, guid: 8b3f676fe7b41044495a2964396b8ba3, type: 3}
+  powerUps:
+  - {fileID: 4466054202057240743, guid: 026531646a28ee4449944858be10fc35, type: 3}
+  - {fileID: 3610781359570546172, guid: d75d92a3f681d2640b0f8d6c4c6e4e62, type: 3}
+  scoreAddition: 2
 --- !u!58 &7149000080088140206
 CircleCollider2D:
   m_ObjectHideFlags: 0

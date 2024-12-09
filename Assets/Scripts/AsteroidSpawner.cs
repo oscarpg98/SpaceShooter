@@ -9,7 +9,6 @@ using UnityEngine.Pool;
 public class AsteroidSpawner : MonoBehaviour {
     [SerializeField] private Asteroid asteroidPrefab;
     [SerializeField] private float spawnTime = 0.5f;
-    [SerializeField] private float speed = 12;
     private float timer;
     private Camera mainCamera;
     private ObjectPool<Asteroid> asteroidPool;

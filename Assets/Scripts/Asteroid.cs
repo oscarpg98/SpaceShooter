@@ -8,7 +8,7 @@ public class Asteroid : MonoBehaviour {
     private GameManager gameManager;
     private float velocidad = 15;
     private float timer;
-    private bool isReleased = false;
+    private bool isDestroyed = false;
     private ShootingSystem shootingSystem;
     private ObjectPool<Asteroid> asteroidPool;
     public ObjectPool<Asteroid> AsteroidPool { get => asteroidPool; set { asteroidPool = value; } }
@@ -27,7 +27,7 @@ public class Asteroid : MonoBehaviour {
         transform.Translate(Time.deltaTime * velocidad * -transform.right);
 
         timer += Time.deltaTime;
-        if (timer >= 4) {
+        if (timer >= 4 && !isDestroyed) {
             asteroidPool.Release(this);
             timer = 0;
         }
@@ -35,16 +35,19 @@ public class Asteroid : MonoBehaviour {
     }
 
     private void OnTriggerEnter2D(Collider2D other) {
+        if (isDestroyed) return;
         if (other.gameObject.CompareTag("Laser")) {
+            isDestroyed = true;
+            
             gameManager.IncrementScore(scoreAddition);
-            // Añado esta comprobación porque cuando disparo 3 lasers colisiona más de 1 con el asteroide e intenta hacer release cuando ya está desactivado.
-            if (!isReleased) {
-                isReleased = true;
-                asteroidPool.Release(this);
-            }
+            
+            asteroidPool.Release(this);
             shootingSystem.ReleaseLaserExternally(other.GetComponent<Laser>());
+
             AudioManager.Instance.PlaySoundEffect(crashSound);
+            
             float powerUpProbability = Random.value;
+            
             if (powerUpProbability <= 0.25f) {
                 Instantiate(powerUps[0], transform.position, Quaternion.identity); // Medkit
             }
@@ -53,6 +56,7 @@ public class Asteroid : MonoBehaviour {
             }
         }
         else if (other.gameObject.CompareTag("Player")) {
+            isDestroyed = true;
             asteroidPool.Release(this);
             AudioManager.Instance.PlaySoundEffect(crashSound);
         }

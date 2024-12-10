@@ -13,6 +13,7 @@ public class AsteroidSpawner : MonoBehaviour {
     private Camera mainCamera;
     private ObjectPool<Asteroid> asteroidPool;
     public ObjectPool<Asteroid> AsteroidPool { get => asteroidPool; set { asteroidPool = value; } }
+    private float offset;
 
     private void Awake() {
         asteroidPool = new ObjectPool<Asteroid>(CreateAsteroid, GetAsteroid, ReleaseAsteroid, DestroyAsteroid);
@@ -20,7 +21,7 @@ public class AsteroidSpawner : MonoBehaviour {
     void Start() {
         mainCamera = Camera.main;
         timer = 0f;
-        //InvokeRepeating(nameof(SpawnAsteroid), 0f, spawnTime); // Crear asteroide cada 0,7 segundos.
+        offset = 2.1f;
     }
     private Asteroid CreateAsteroid() {
         Asteroid asteroidCopy = Instantiate(asteroidPrefab, transform.position, Quaternion.identity);
@@ -31,7 +32,7 @@ public class AsteroidSpawner : MonoBehaviour {
     private void GetAsteroid(Asteroid asteroid) {
         asteroid.gameObject.SetActive(true);
         float spawnX = mainCamera.transform.position.x + mainCamera.orthographicSize * mainCamera.aspect + 1;
-        float spawnY = UnityEngine.Random.Range(-mainCamera.orthographicSize, mainCamera.orthographicSize);
+        float spawnY = UnityEngine.Random.Range(-mainCamera.orthographicSize, mainCamera.orthographicSize - offset);
         asteroid.transform.position = new Vector3(spawnX, spawnY, 0);
     }
     private void ReleaseAsteroid(Asteroid asteroid) {
@@ -50,17 +51,4 @@ public class AsteroidSpawner : MonoBehaviour {
             timer = 0f;
         }
     }
-
-    /*void SpawnAsteroid() {
-        float spawnY = UnityEngine.Random.Range(-mainCamera.orthographicSize, mainCamera.orthographicSize);
-        float spawnX = mainCamera.transform.position.x + mainCamera.orthographicSize * mainCamera.aspect;
-
-        Asteroid asteroid = Instantiate(asteroidPrefab, new Vector3(spawnX, spawnY, 0), Quaternion.identity);
-
-        // Muevo el asteroide hacia la izquierda.
-        Rigidbody2D rb = asteroid.GetComponent<Rigidbody2D>();
-        if (rb != null) {
-            rb.velocity = Vector2.left * speed;
-        }
-    }*/
 }

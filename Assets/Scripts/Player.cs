@@ -9,13 +9,17 @@ public class Player : MonoBehaviour {
     [SerializeField] private int vida;
     private Camera mainCamera;
     private BoxCollider2D boxCollider;
+    private Rigidbody2D rigidBody;
     private GameManager gameManager;
+    private float offset;
 
 
     void Start() {
         mainCamera = Camera.main;
         boxCollider = GetComponent<BoxCollider2D>();
+        rigidBody = GetComponent<Rigidbody2D>();
         gameManager = FindObjectOfType<GameManager>();
+        offset = 2.1f;
     }
 
     void Update() {
@@ -42,11 +46,13 @@ public class Player : MonoBehaviour {
         Vector3 clampedPosition = transform.position;
 
         // Hace que el jugador no se salga de los bordes.
+        // Utilizo el offset para que el player no se pueda mover por donde aparecen las barras de vida y escudo.
         clampedPosition.x = Mathf.Clamp(clampedPosition.x, minBounds.x + halfWidth, maxBounds.x - halfWidth);
-        clampedPosition.y = Mathf.Clamp(clampedPosition.y, minBounds.y + halfHeight, maxBounds.y - halfHeight);
+        clampedPosition.y = Mathf.Clamp(clampedPosition.y, minBounds.y + halfHeight, maxBounds.y - halfHeight - offset);
 
         transform.position = clampedPosition;
     }
+
     private void OnTriggerEnter2D(Collider2D other) {
         if (other.gameObject.CompareTag("Asteroid")) {
             gameManager.DecreaseHealth();

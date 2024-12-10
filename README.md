@@ -1,0 +1,6 @@
+
+# Space Shooter - Revenge of the Asteroids
+
+El objetivo de este space shooter es sobrevivir al goteo constante de asteroides que intentan chocar contigo. Tienes una vida de 100 y cada golpe resta 25 a esa vida. Además, tienes un escudo que sirve a modo de golpe extra, si chocas pierdes todo el escudo, pero si pasas al menos 10 segundos sin chocar con nada más el escudo se regenera. Puedes disparar lasers pulsando la barra espaciadora. Cuando destruyes un asteroide usando un laser, hay cierta probabilidad de que caiga un powerup. Hay 2 powerups: un medkit que te da 25 de vida y un triple cannon que te permite disparar 3 balas durante 10 segundos. Si a los 7 segundos no has cogido el powerup empezará a parpadear y 3 segundos después desaparecerá. Destruir un asteroide te da 1 punto, recoger un medkit da otro punto extra y recoger el triple cannon da 2 puntos extra. En cualquier momento puedes pulsar la tecla escape y pausar el juego.
+
+Enlace itch.io -> https://oscarpg98.itch.io/spaceshooter-revenge-of-the-asteroids
